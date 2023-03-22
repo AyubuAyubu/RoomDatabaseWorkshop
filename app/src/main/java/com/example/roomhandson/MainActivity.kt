@@ -43,13 +43,15 @@ class MainActivity : AppCompatActivity() {
 												employeeDao: EmployeeDao) {
 
 		if (employeesList.isNotEmpty()) {
-
-
 			// Adapter class is initialized and list is passed in the param.
-			val itemAdapter = ItemAdapter(employeesList,{updateId ->
-				updateRecordDialog(updateId,employeeDao)
-			}){ deleteId->
-				lifecycleScope.launch {
+			val itemAdapter = ItemAdapter(employeesList,
+				{
+					updateId ->
+				  updateRecordDialog(updateId,employeeDao)
+		    	})
+			  {
+					  deleteId->
+				    lifecycleScope.launch {
 					employeeDao.fetchEmployeeById(deleteId).collect {
 						if (it != null) {
 							deleteRecordAlertDialog(deleteId, employeeDao, it)
@@ -94,8 +96,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-	fun updateRecordDialog(id:Int,employeeDao: EmployeeDao)  {
-		val updateDialog = Dialog(this, androidx.constraintlayout.widget.R.style.Theme_AppCompat_Dialog)
+	private fun updateRecordDialog(id:Int,employeeDao: EmployeeDao)  {
+		val updateDialog = Dialog(this, R.style.Theme_Dialog)
 		updateDialog.setCancelable(false)
 		/*Set the screen content from a layout resource.
 		 The resource will be inflated, adding all top-level views to the screen.*/
@@ -143,7 +145,7 @@ class MainActivity : AppCompatActivity() {
 	 * We add an id to get the selected position and an employeeDao param to get the
 	 * methods from the dao interface then launch a coroutine block to call the methods
 	 */
-	fun deleteRecordAlertDialog(id:Int,employeeDao: EmployeeDao,employee: EmployeeEntity) {
+	private fun deleteRecordAlertDialog(id:Int,employeeDao: EmployeeDao,employee: EmployeeEntity) {
 		val builder = AlertDialog.Builder(this)
 		//set title for alert dialog
 		builder.setTitle("Delete Record")

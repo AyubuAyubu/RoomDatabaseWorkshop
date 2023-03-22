@@ -64,11 +64,11 @@ class ItemAdapter(
 		}
 		//start
 		holder.ivEdit.setOnClickListener {
-			updateListener(item.id)
+			updateListener.invoke(item.id)
 		}
 
 		holder.ivDelete.setOnClickListener {
-			deleteListener(item.id)
+			deleteListener.invoke(item.id)
 		}
 	}
 //end
